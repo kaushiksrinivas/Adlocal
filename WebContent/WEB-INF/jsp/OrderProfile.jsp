@@ -23,7 +23,7 @@
       	}
       %>
       <h2 id="DisplayString"> <%=display %></h2>
-       <h2 style = "align:center; vertical-align:middle;"><a href="LoginHome.jsp">Login Home</a> | <a href="Order.jsp">New order</a></h2>
+       <h2 style = "align:center; vertical-align:middle;"><a href="Order.jsp">New order</a></h2>
       </div>
       </div>
     </div>

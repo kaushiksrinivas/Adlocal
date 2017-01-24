@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="CSS/order.css">
 </head>
 <body>
+
 <div id="wrap">
   <div id="regbar">
     <div id="navthing">
@@ -18,15 +19,16 @@
 </div>
 <div class="modal-dialog">
 	<div class="SignUp-container">
-		<h2>Create Order</h2><br>
+		<h2>Create Order</h2><br> 
+		<p><a href="logout.html">LogOut</a> </p>
 	    <form action="AddOrder" method="POST">
 	        Delivery Address
 	        <textarea name="address" placeholder="Delivery Address" rows="4" cols=""></textarea>
 	        Order List
 	        <textarea name="order_summary" placeholder="Order List" rows="10" cols=""></textarea>
 			<select name="vendor" id="shopKeepers">
-               <option value="Vendor1">Vendor1</option>
-               <option value="Vendor1">Vendor2</option>
+               <option value="shreeharsha">shreeharsha enterprises</option>
+               <option value="kumar enterprises">kumar enterprises</option>
             </select> 
 			<input type="submit" name="placeOrder" class="login loginmodal-submit" value="Place Order">
 		 </form>			

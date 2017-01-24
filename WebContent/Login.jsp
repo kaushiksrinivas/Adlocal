@@ -8,6 +8,16 @@
   <link rel="stylesheet" href="CSS/loginstyle.css">
 </head>
 <body>
+<%
+Object o = request.getAttribute("response");
+String display = "";
+if(o == null){
+	
+}
+else{
+	display = o.toString();
+}
+%>
 <div id="background">
 <div id="wrap">
   <div id="regbar">
@@ -18,10 +28,15 @@
 </div>
 <div>
 	<div class="loginmodal-container">
+		<p> <%= display %> </p>
 		<h2>Login to Your Account</h2><br>
 		<form action="Login" method="POST">
 			<input type="text" name="Mobile" placeholder="+91">
 			<input type="password" name="Password" placeholder="Password">
+			<select name="UserType" id="customertype">
+					<option value="Consumer">Consumer</option>
+					<option value="ShopKeeper">ShopKeeper</option>
+			</select> 
 			<input type="submit" name="login" class="login loginmodal-submit" value="Login">
 		</form>			
 		<div class="login-help">

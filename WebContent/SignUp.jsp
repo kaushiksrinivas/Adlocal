@@ -7,10 +7,21 @@
 <link rel="stylesheet" href="CSS/signupstyle.css">
 </head>
 <body>
+<%
+Object o = request.getAttribute("response");
+String display = "";
+if(o == null){
+	
+}
+else{
+	display = o.toString();
+}
+%>
 	<div id="wrap">
 		<div id="regbar">
 			<div id="navthing">
 				<h1>AdLocal - A local vendor</h1>
+				<p> <%= display %></p>
 			</div>
 		</div>
 	</div>

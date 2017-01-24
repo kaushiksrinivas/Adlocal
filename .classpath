@@ -30,5 +30,7 @@
 	<classpathentry kind="lib" path="D:/KAUSHIK_SRINIVAS/OfficialData/JAVA/SPRING/JARS/springjars (1)/springjars/web/web/org.springframework.web.struts-3.0.1.RELEASE-A.jar"/>
 	<classpathentry kind="lib" path="D:/KAUSHIK_SRINIVAS/OfficialData/JAVA/SPRING/JARS/springjars (1)/springjars/web/web/org.springframework.web-3.0.1.RELEASE-A.jar"/>
 	<classpathentry kind="lib" path="D:/KAUSHIK_SRINIVAS/OfficialData/JAVA/AdvancedJava_Chandrakant/mysql-connector-java-5.1.39/mysql-connector-java-5.1.39/mysql-connector-java-5.1.39-bin.jar"/>
+	<classpathentry kind="lib" path="D:/KAUSHIK_SRINIVAS/OfficialData/JAVA/SPRING/JARS/org.springframework.jdbc.jar/org.springframework.jdbc.jar"/>
+	<classpathentry kind="lib" path="D:/Users/kaushik.srinivas/AppData/Local/Microsoft/Windows/INetCache/IE/KWPRHE21/org.springframework.transaction-3.0.1.RELEASE-A[1].jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

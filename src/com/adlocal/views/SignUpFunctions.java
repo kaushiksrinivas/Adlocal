@@ -65,12 +65,14 @@ public class SignUpFunctions {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bitnami_reviewboard", "root",
 					"reviewboard");
-			PreparedStatement ps = con.prepareStatement("insert into adlocal_users values(?,?,?,?)");
+			PreparedStatement ps = con.prepareStatement("insert into adlocal_users values(?,?,?,?,?)");
 
 			ps.setString(1, this.UserName);
 			ps.setString(2, this.MobileNumber);
 			ps.setString(3, this.UserType);
 			ps.setString(4, this.Password);
+			ps.setInt(5, 0);
+			
 			System.out.println("updating db now");
 			rs = ps.executeUpdate();
 

@@ -10,20 +10,24 @@
   <link rel="stylesheet" href="CSS/loginprofile.css">
 </head>
 <body>
-<%Object o = request.getAttribute("response");
-	String display = null;
-	if (o == null){
-	}
-	else{
-		display = o.toString();
-	}
-%>
+  <%
+  	Object o = request.getAttribute("response");
+    String display = null;
+  	if(o == null){
+  		
+  	}
+  	else{
+  		display = o.toString();
+  	}
+  %>
   <div id="wrap">
   <div id="regbar">
     <div id="navthing">
     <div id="home-container">
-      <h1>  AdLocal - A local vendor</h1>        <p>Welcome User: <%= display %> </p>   <p><a href="logout.html">LogOut</a> </p>
-       <h2 style = "align:center; vertical-align:middle;"><a href="profile.jsp">Profile</a> | <a href="Order.jsp">order</a></h2> 
+      <h1> Vendor Home Page </h1> 
+      <p> Welcome Vendor: <%=display %>
+      <a href = "logout.html">Logout </a>
+      <h2 style = "align:center; vertical-align:middle;"><a href="profile.jsp">Profile</a>
       </div>
       </div>
     </div>
