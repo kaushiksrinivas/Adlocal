@@ -47,17 +47,37 @@ public class UserDAO {
 	public HashMap<String,String> UserExistsCheck(User u){
 		//create the hashmap which holds the result.
 		HashMap<String,String> result = new HashMap<String,String>();
-		// refer to the correct db tables adlocal_users/adlocal_vendors based on the user type.
-		String db_name = null;
-		if(u.UserType.equals("Consumer")){
-			db_name = "adlocal_users";
-		}
-		else{
-			db_name = "adlocal_vendors";
-		}
-		//check for the unique mobile number validation from the database.
-		String query = "SELECT COUNT(*) FROM "+db_name+" WHERE Phone="+u.getMobile();
+		// veriification from the users table.
+		String db_name = "adlocal_users";
+		
+		//perform user name uniqueness validation on users table.
+		String query = "SELECT COUNT(*) FROM "+db_name+" WHERE User_Name='"+u.getUserName()+"'";
 		int count = this.template.queryForInt(query);
+				
+		//If an entry found in the database for user name, return with error message.
+		if(count > 0){
+			result.put("flag", "false");
+			result.put("message", "user name already registered, please choose a different user name!");
+			return result;
+		}
+		
+		db_name = "adlocal_vendors";
+		
+		//perform user name uniqueness validation on vendors table.
+		query = "SELECT COUNT(*) FROM "+db_name+" WHERE User_Name='"+u.getUserName()+"'";
+		count = this.template.queryForInt(query);
+				
+		//If an entry found in the database for user name, return with error message.
+		if(count > 0){
+			result.put("flag", "false");
+			result.put("message", "user name already registered, please choose a different user name!");
+			return result;
+		}
+		
+		db_name = "adlocal_users";
+		//check for the unique mobile number validation from the database on users table.
+	    query = "SELECT COUNT(*) FROM "+db_name+" WHERE Phone="+u.getMobile();
+		count = this.template.queryForInt(query);
 		
 		//If an entry found in the database for mobile number, return with error message.
 		if(count>0){
@@ -66,16 +86,22 @@ public class UserDAO {
 			return result;
 		}
 		
-		//If mobile number validation is successfull, perform user name uniqueness validation.
-		query = "SELECT COUNT(*) FROM "+db_name+" WHERE User_Name='"+u.getUserName()+"'";
+		
+		db_name = "adlocal_vendors";
+		//Validation in vendors table for mobile no.
+		db_name = "adlocal_vendors";
+		
+		query = "SELECT COUNT(*) FROM "+db_name+" WHERE Phone="+u.getMobile();
 		count = this.template.queryForInt(query);
 		
-		//If an entry found in the database for user name, return with error message.
-		if(count > 0){
+		//If an entry found in the database for mobile number, return with error message.
+		if(count>0){
 			result.put("flag", "false");
-			result.put("message", "user name already registered, please choose a different user name!");
+			result.put("message", "mobile number already registered, Please login!");
 			return result;
 		}
+		
+		
 		
 		result.put("flag", "true");
 		result.put("message", "No user exists!");
@@ -189,6 +215,74 @@ public class UserDAO {
 			return result;
 		}
 		
+	}
+	
+	public User GenerateProfile(User u){
+		//first test if the user is consumer or vendor and change the table name accordingly.
+		String table_name = "adlocal_users";
+		String query = "SELECT COUNT(*) FROM "+table_name+" WHERE Phone = "+u.getMobile();
+		int resultCount = this.template.queryForInt(query);
+		
+		if(!(resultCount >0)){
+			table_name = "adlocal_vendors";
+			u.setUserType("ShopKeeper");
+		}else{
+			u.setUserType("Consumer");
+		}
+		
+		query = "SELECT * FROM "+table_name+" WHERE Phone = "+u.getMobile();
+		SqlRowSet rs = this.template.queryForRowSet(query);
+		
+		while(rs.next()){
+			u.setUserName(rs.getString("User_Name"));
+			u.setOrderCount(rs.getInt("orderCount"));
+		}
+		
+		return u;
+		
+	}
+	
+	public HashMap<String,String> ChangeUserName(User u){
+		
+		HashMap<String,String> result = new HashMap<String,String>();
+		String table_name = "adlocal_users";
+		String query = "SELECT COUNT(*) FROM "+table_name+" WHERE User_Name = '"+u.getUserName()+"'";
+		int resultCount = this.template.queryForInt(query);
+		
+		if(resultCount > 0){
+			result.put("flag", "false");
+			result.put("message", "Username already in use! Try a different one.");
+			return result;
+		}
+		
+		//Now if no user with same user name exists, check for vendors with same user name. User name is unique across users and vendors.
+		table_name = "adlocal_vendors";
+		query = "SELECT COUNT(*) FROM "+table_name+" WHERE User_Name = '"+u.getUserName()+"'";
+		resultCount = this.template.queryForInt(query);
+		
+		if(resultCount > 0){
+			result.put("flag", "false");
+			result.put("message", "Username already in use! Try a different one.");
+			return result;
+		}
+		
+		// If user name is unique across users and vendors. Go ahead and update the database with new user name.
+		if(u.getUserType().equals("Consumer")){
+			table_name = "adlocal_users";
+		}else{
+			table_name = "adlocal_vendors";
+		}
+		query = "UPDATE "+table_name+" SET User_Name = '"+u.getUserName()+"' WHERE Phone = '"+u.getMobile()+"'";
+		resultCount = this.template.update(query);
+		if(resultCount>0){
+			result.put("flag", "true");
+			result.put("message", "Username changed successfully");
+			return result;
+		}else{
+			result.put("flag", "false");
+			result.put("message", "Username change failed! try again.");
+			return result;
+		}
 	}
 	
 

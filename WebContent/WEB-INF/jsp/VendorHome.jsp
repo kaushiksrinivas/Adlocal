@@ -27,7 +27,7 @@
       <h1> Vendor Home Page </h1> 
       <p> Welcome Vendor: <%=display %>
       <a href = "logout.html">Logout </a>
-      <h2 style = "align:center; vertical-align:middle;"><a href="profile.jsp">Profile</a>
+      <h2 style = "align:center; vertical-align:middle;"><a href="ViewProfile">Profile</a>
       </div>
       </div>
     </div>
