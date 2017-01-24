@@ -328,5 +328,22 @@ public class UserDAO {
 		}
 	}
 	
+	public boolean ChangePassword(User u){
+		String table_name = "";
+		if(u.getUserType().equals("Consumer")){
+			table_name = "adlocal_users";
+		}else{
+			table_name = "adlocal_vendors";
+		}
+		
+		String query = "UPDATE "+table_name+" SET Passcode = '"+u.getPassword()+"' WHERE Phone = '"+u.getMobile()+"'";
+		int resultCount = this.template.update(query);
+		
+		if(resultCount > 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 }

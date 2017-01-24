@@ -183,6 +183,68 @@ public class Controllers {
 		
 	}
 	
+	@RequestMapping(value="/ChangePassword")
+	public ModelAndView ChangePassword(HttpServletRequest req, HttpServletResponse res,@CookieValue(value="Mobile",defaultValue="invalid_cookie")String mobile){
+		if(mobile.equals("invalid_cookie")){
+			Cookie c = new Cookie("Mobile","invalid_cookie");
+			c.setMaxAge(0);
+			res.addCookie(c);
+			return new ModelAndView("Login","response","User Session Has Timed Out! Please Login to change the password.");
+		}
+		
+		Resource resource = new ClassPathResource("ApplicationContext.xml");
+		BeanFactory factory = new XmlBeanFactory(resource);
+				
+		//get user DAO objec and default user object for the current user login.
+		UserDAO userdao = (UserDAO)factory.getBean("UserDao");
+		User user = (User)factory.getBean("user");
+		
+		String newPassword = req.getParameter("NewPassword");
+		String newPasswordDup = req.getParameter("NewPasswordDup");
+		
+		ModelAndView mv = null;
+		// check if the passwords provided are same. If not add the existing cookie and redirect to loginHome page with error message.
+		if(!(newPassword.equals(newPasswordDup))){
+			mv = new ModelAndView("LoginHome");
+			mv.addObject("response", mobile);
+			mv.addObject("failures", "Passwords did not match");
+			Cookie c = new Cookie("Mobile",mobile);
+			c.setMaxAge(1800);
+			res.addCookie(c);
+			
+			return mv;
+			
+		}
+		
+		user.setMobile(mobile);
+		user.setPassword(newPassword);
+		user.setUserType(req.getParameter("UserType"));
+		
+		boolean result = userdao.ChangePassword(user);
+		
+		if(result){
+			mv = new ModelAndView("Login");
+			mv.addObject("response", "Password Changed. Login Again!");
+			Cookie c = new Cookie("Mobile","invalid_cookie");
+			c.setMaxAge(0);
+			res.addCookie(c);
+			
+			return mv;
+			
+		}else{
+			mv = new ModelAndView("LoginHome");
+			mv.addObject("response", mobile);
+			mv.addObject("failures", "Password change failed! try again.");
+			Cookie c = new Cookie("Mobile",mobile);
+			c.setMaxAge(1800);
+			res.addCookie(c);
+			
+			return mv;
+		}
+	
+	}
+	
+	
 }
 
 
