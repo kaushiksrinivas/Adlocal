@@ -1,5 +1,7 @@
 package com.adlocal.model;
 
+import java.util.HashMap;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -69,6 +71,32 @@ public class OrderDAO {
 		}
 		
 	
+	}
+	
+	public HashMap<String,String> GetOrderData(String OrderId){
+		HashMap<String,String> map = new HashMap<String,String> ();
+		int vendorId = 0;
+		String query = "SELECT DeliveryAddress,OrderSummary,Status,vendorid FROM adlocal_orders WHERE OrderId = '"+OrderId+"'";
+		SqlRowSet rs = this.template.queryForRowSet(query);
+		
+		while(rs.next()){
+			map.put("DeliveryAddress",rs.getString("DeliveryAddress") );
+			map.put("OrderSummary",rs.getString("OrderSummary") );
+			map.put("Status", rs.getString("Status"));
+			vendorId = rs.getInt("vendorid");
+		}
+		
+		query = "SELECT User_Name FROM adlocal_vendors WHERE VendorId = "+vendorId;
+		rs = this.template.queryForRowSet(query);
+		while(rs.next()){
+			map.put("Vendor", rs.getString("User_Name"));
+		}
+		
+		map.put("OrderId",OrderId);
+		return map;
+		
+		
+		
 	}
 	
 	

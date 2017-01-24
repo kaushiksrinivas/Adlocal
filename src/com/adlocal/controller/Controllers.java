@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.adlocal.model.OrderDAO;
 import com.adlocal.model.User;
 import com.adlocal.model.UserDAO;
 
@@ -243,6 +244,65 @@ public class Controllers {
 		}
 	
 	}
+	
+	@RequestMapping(value="/OrderHistory")
+	public ModelAndView OrdersHistory(HttpServletRequest req, HttpServletResponse res,@CookieValue(value="Mobile",defaultValue="invalid_cookie")String mobile){
+		if(mobile.equals("invalid_cookie")){
+			Cookie c = new Cookie("Mobile","invalid_cookie");
+			c.setMaxAge(0);
+			res.addCookie(c);
+			return new ModelAndView("Login","response","Session timed out! Please login.");
+		}
+		
+		Cookie c = new Cookie("Mobile",mobile);
+		c.setMaxAge(1800);
+		res.addCookie(c);
+		return new ModelAndView("Orders","response",mobile);
+	}
+	
+	@RequestMapping(value="/OrderOperation")
+	public ModelAndView OrderOperations(HttpServletRequest req, HttpServletResponse res,@CookieValue(value="Mobile",defaultValue="invalid_cookie")String mobile){
+		if(mobile.equals("invalid_cookie")){
+			Cookie c = new Cookie("Mobile","invalid_cookie");
+			c.setMaxAge(0);
+			res.addCookie(c);
+			return new ModelAndView("Login","response","Session timed out! Please login.");
+		}
+		
+		String operation = req.getParameter("operation");
+		String orderId = req.getParameter("OrderId");
+		//create the bean factory.
+		Resource resource = new ClassPathResource("ApplicationContext.xml");
+		BeanFactory factory = new XmlBeanFactory(resource);
+		OrderDAO orderdao = (OrderDAO)factory.getBean("OrderDao");
+		HashMap<String,String> result = new HashMap<String,String>();
+		
+		ModelAndView mv = null;
+		
+		if(operation.equals("Display")){
+			result = orderdao.GetOrderData(orderId);
+			mv = new ModelAndView("Orders");
+			mv.addObject("DeliveryAddress", result.get("DeliveryAddress"));
+			mv.addObject("OrderId",result.get("OrderId") );
+			mv.addObject("OrderSummary",result.get("OrderSummary") );
+			mv.addObject("Status",result.get("Status"));
+			mv.addObject("Vendor",result.get("Vendor"));
+			mv.addObject("response", mobile);
+			
+			Cookie c = new Cookie("Mobile",mobile);
+			c.setMaxAge(1800);
+			res.addCookie(c);
+			
+			
+		}else if(orderId.equals("Delete")){
+			
+		}else{
+			
+		}
+		
+		return mv;
+	}
+
 	
 	
 }

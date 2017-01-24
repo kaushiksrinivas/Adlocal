@@ -32,7 +32,7 @@
     <div id="home-container">
       <h1>  AdLocal - A local vendor</h1>        <p>Welcome User: <%= display %> </p> &nbsp  <p><a href="logout">LogOut</a> </p> <br/>
       <p> <%= failMessage %></p>
-       <h2 style = "align:center; vertical-align:middle;"><a href="ViewProfile">Profile</a> | <a href="Order">order</a></h2> 
+       <h2 style = "align:center; vertical-align:middle;"><a href="ViewProfile">Profile</a> | <a href="Order">order</a> | <a href="OrderHistory">Order History & Management</a></h2>
       </div>
       </div>
     </div>
