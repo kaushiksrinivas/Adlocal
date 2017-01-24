@@ -2,6 +2,8 @@ package com.adlocal.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.Cookie;
@@ -30,7 +32,13 @@ public class OrderServlet {
 			String address = req.getParameter("address");
 			String order_summary = req.getParameter("order_summary");
 			String vendor = req.getParameter("vendor");
-
+			String FromTime = req.getParameter("FromTime");
+			String ToTime = req.getParameter("ToTime");
+			
+			//Get the time of order
+			Date date = new Date();
+			Timestamp time = new Timestamp(date.getTime());
+			
 
 			String user_name = null;
 //			Cookie[] c = req.getCookies();
@@ -70,6 +78,10 @@ public class OrderServlet {
 			order.setOrderSummary(order_summary);
 			order.setVendorName(vendor);
 			order.setUserPhone(mobile);
+			order.setTime(time);
+			order.setDeliveryWindowFromTime(FromTime);
+			order.setDeliveryWindowToTime(ToTime);
+			order.setStatus("Open");
 			
 			boolean flag = orderdao.AddOrder(order);
 			if(flag){

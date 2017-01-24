@@ -45,8 +45,8 @@ public class OrderDAO {
 		vendorOrdersCount+= 1;
 		
 		table_name = "adlocal_orders";
-		query = "insert into "+table_name+" values(?,?,?,?,?)";
-		int status = this.template.update(query, orderId ,obj.getDeliveryAddress(),obj.getOrderSummary(), uid, vid);
+		query = "insert into "+table_name+" values(?,?,?,?,?,?,?,?,?)";
+		int status = this.template.update(query, orderId ,obj.getDeliveryAddress(),obj.getOrderSummary(),obj.getTime(),obj.getDeliveryWindowFromTime(),obj.getDeliveryWindowToTime(),obj.getStatus(), uid, vid);
 		
 		if(status > 0){
 			boolean checkflag = true;

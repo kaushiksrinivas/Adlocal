@@ -22,8 +22,8 @@
   <div id="regbar">
     <div id="navthing">
     <div id="home-container">
-      <h1>  AdLocal - A local vendor</h1>        <p>Welcome User: <%= display %> </p>   <p><a href="logout.html">LogOut</a> </p>
-       <h2 style = "align:center; vertical-align:middle;"><a href="profile.jsp">Profile</a> | <a href="Order.jsp">order</a></h2> 
+      <h1>  AdLocal - A local vendor</h1>        <p>Welcome User: <%= display %> </p>   <p><a href="logout">LogOut</a> </p>
+       <h2 style = "align:center; vertical-align:middle;"><a href="profile.jsp">Profile</a> | <a href="Order">order</a></h2> 
       </div>
       </div>
     </div>
