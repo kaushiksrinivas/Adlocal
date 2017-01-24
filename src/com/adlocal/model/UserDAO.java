@@ -285,5 +285,48 @@ public class UserDAO {
 		}
 	}
 	
+	public HashMap<String,String> ChangeMobile(User u,String OldPhoneNumber){
+		
+		HashMap<String,String> result = new HashMap<String,String>();
+		String table_name = "adlocal_users";
+		String query = "SELECT COUNT(*) FROM "+table_name+" WHERE Phone = '"+u.getMobile()+"'";
+		int resultCount = this.template.queryForInt(query);
+		
+		if(resultCount > 0){
+			result.put("flag", "false");
+			result.put("message", "Phone Number already in use! Try a different one.");
+			return result;
+		}
+		
+		//Now if no user with same user name exists, check for vendors with same user name. User name is unique across users and vendors.
+		table_name = "adlocal_vendors";
+		query = "SELECT COUNT(*) FROM "+table_name+" WHERE Phone = '"+u.getUserName()+"'";
+		resultCount = this.template.queryForInt(query);
+		
+		if(resultCount > 0){
+			result.put("flag", "false");
+			result.put("message", "Phone Number already in use! Try a different one.");
+			return result;
+		}
+		
+		// If user name is unique across users and vendors. Go ahead and update the database with new user name.
+		if(u.getUserType().equals("Consumer")){
+			table_name = "adlocal_users";
+		}else{
+			table_name = "adlocal_vendors";
+		}
+		query = "UPDATE "+table_name+" SET Phone = '"+u.getMobile()+"' WHERE Phone = '"+OldPhoneNumber+"'";
+		resultCount = this.template.update(query);
+		if(resultCount>0){
+			result.put("flag", "true");
+			result.put("message", "Phone Number changed successfully");
+			return result;
+		}else{
+			result.put("flag", "false");
+			result.put("message", "Phone Number Change Failed! try again.");
+			return result;
+		}
+	}
+	
 
 }
